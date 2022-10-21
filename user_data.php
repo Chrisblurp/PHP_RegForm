@@ -21,18 +21,42 @@ $Gender = "gender: \n".$_POST['gender']."
 
 $Country = "country: \n".$_POST['country']."
 ";
- $file = fopen("userdata.csv", "a");
-fwrite($file, $Name);
-fwrite($file, $Email);
-fwrite($file, $DOB);
-fwrite($file, $Gender);
-fwrite($file, $Country);
-fclose($file);
-
+    createUserData();
 }
+    
+    function createUserData(){
+ $file = fopen("./userdata.csv", "a");
+//         creates an array that handles those data
+         $registrationData = array(
+        'name' => $Name,
+        'email' => $email,
+        'Dateofbirth' => $DOB,
+         'gender' => $gender,
+         'country' => $Country
+    );
+        // then check if user already exist
+    if(checkUserExist($email)){
+        echo "User Already exist"
+        }
+        else{
+           // enter the data into the file
+        $file = fopen('../userdata.csv', 'a');
+        fputcsv($file, $registrationData);
+        fclose($file);
+        <h2>Thank You your details are as follows <?php print_r ($file) ?> </h2>
+    }
+            
+function checkUserExist ($email){
+ $file = fopen('../userdata.csv', 'r');
+ while(!feof($file)){
+    $line = fgetcsv($file);
+    if($line[1] == $email) {
+        return true;
+    }
+ }
+ return false;
 ?>
 
-<h2>Thank You your details are as follows <?php print_r ($file) ?> </h2>
 
         
 
